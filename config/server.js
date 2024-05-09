@@ -4,11 +4,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { dbConnection } from './mongo.js';
+import {comprobarInformacion} from '../src/publication/publication.controller.js';
+import publicationRoutes from '../src/publication/publication.routes.js'
 
 class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
+        this.publicationPath = '/blog/v1';
 
         this.middlewares();
         this.connectDB();
@@ -17,6 +20,7 @@ class Server{
 
     async connectDB(){
         await dbConnection();
+        await comprobarInformacion();  
     }
 
     middlewares(){
@@ -28,6 +32,7 @@ class Server{
     }
 
     routes(){
+        this.app.use(this.publicationPath, publicationRoutes);
     }
 
     listen(){

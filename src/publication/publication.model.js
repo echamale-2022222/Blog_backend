@@ -34,7 +34,7 @@ const PublicationSchema = new mongoose.Schema({
         required: true
     },
     imagenes: {
-        type: String,
+        type: Array,
         required: true
     },
     caracteristicasPrincipales: {
@@ -52,6 +52,17 @@ const PublicationSchema = new mongoose.Schema({
     etiquetas: {
         type: String,
         required: true
+    },
+    comentarios: {
+        nombre: {
+            type: String,
+        },
+        comentario: {
+            type: String,
+        },
+        fecha: {
+            type: Date,
+        }
     }
 })
 
