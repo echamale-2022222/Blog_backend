@@ -58,7 +58,7 @@ export const publicationAgendaWeb = async (res = response) => {
     await publicationDefault.save();
 }
 
-export const publicationClonKinal = async ( res = response) => {
+export const publicationClonKinal = async (res = response) => {
     const publicationDefault = new PublicationModel({
         titulo: "Clon página Kinal",
         descripcion: "Clon de la página de Kinal, una página web que muestra información sobre la institución educativa Kinal.",
@@ -77,7 +77,7 @@ export const publicationClonKinal = async ( res = response) => {
     await publicationDefault.save();
 }
 
-export const publicationUsuariosMascotas = async ( res = response) => {
+export const publicationUsuariosMascotas = async (res = response) => {
     const publicationDefault = new PublicationModel({
         titulo: "Gestor de usuarios y mascotas",
         descripcion: "Un gestor de usuarios y mascotas es una aplicación web que permite a los usuarios gestionar la información de los usuarios y sus mascotas.",
@@ -96,7 +96,7 @@ export const publicationUsuariosMascotas = async ( res = response) => {
     await publicationDefault.save();
 }
 
-export const publicationAlmacenadoraF = async ( res = response) => {
+export const publicationAlmacenadoraF = async (res = response) => {
     const publicationDefault = new PublicationModel({
         titulo: "Almacenadora parte frontend",
         descripcion: "Una almacenadora es una aplicación web que permite a los usuarios gestionar la información de los productos de una empresa como un todo list.",
@@ -114,7 +114,7 @@ export const publicationAlmacenadoraF = async ( res = response) => {
     })
     await publicationDefault.save();
 }
-export const publicationAlmacenadoraB = async ( res = response) => {
+export const publicationAlmacenadoraB = async (res = response) => {
     const publicationDefault = new PublicationModel({
         titulo: "Almacenadora parte backend",
         descripcion: "Una almacenadora es una aplicación web que permite a los usuarios gestionar la información de los productos de una empresa como un todo list.",
@@ -159,14 +159,27 @@ export const publicationGet = async (req, res) => {
     }
 }
 
+export const publicationById = async (req, res) => {
+    const { id } = req.params;
+    const publication = await PublicationModel.findById(id);
+    
+    if (!publication) {
+        return res.status(404).json({ message: "Publication not found" });
+    } else {
+    res.status(200).json(publication);
+    }
+
+
+}
+
 export const publicationPut = async (req, res) => {
     const { id } = req.params;
+    
+    const { nombre, comentario } = req.body;
 
-    const { _id, titulo, descripcion, imagenPrincipal, autor, link, tecnologiasUtilizadas, deQueTrata, comoFunciona, imagenes, caracteristicasPrincipales, caracteristicasSecundarias, etiquetas, ...rest } = req.body;
     const currentDate = new Date();
-    const nuevoComentario = { ...rest };
-    nuevoComentario.fecha = currentDate;
-
-    await PublicationModel.findByIdAndUpdate(id, { $push: { comentarios: nuevoComentario } });
+    const nuevoComentario = { nombre: nombre, comentario: comentario, fecha: currentDate };
+    console.log(nuevoComentario);
+await PublicationModel.findByIdAndUpdate(id, { $push: { comentarios: nuevoComentario } });
     res.status(200).json({ message: "Comentario agregado" });
 }
